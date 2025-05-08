@@ -5,10 +5,16 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
+// Define the transcript item interface
+interface TranscriptItem {
+  role: 'interviewer' | 'user';
+  text: string;
+}
+
 const Interview = () => {
   const navigate = useNavigate();
   const [isRecording, setIsRecording] = React.useState(false);
-  const [transcript, setTranscript] = React.useState<string[]>([]);
+  const [transcript, setTranscript] = React.useState<TranscriptItem[]>([]);
   const [currentQuestion, setCurrentQuestion] = React.useState(0);
   
   const questions = [
@@ -22,7 +28,7 @@ const Interview = () => {
   const startInterview = () => {
     setIsRecording(true);
     // Simulate receiving transcript updates
-    const demoTranscript = [
+    const demoTranscript: TranscriptItem[] = [
       { role: "interviewer", text: questions[currentQuestion] },
     ];
     setTranscript(demoTranscript);
@@ -42,7 +48,7 @@ const Interview = () => {
   const nextQuestion = () => {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
-      const newTranscript = [
+      const newTranscript: TranscriptItem[] = [
         ...transcript,
         { role: "interviewer", text: questions[currentQuestion + 1] }
       ];
@@ -109,7 +115,7 @@ const Interview = () => {
                   </div>
                   
                   <div className="bg-gray-50 rounded-lg p-6 mb-6 h-96 overflow-y-auto">
-                    {transcript.map((item: any, index) => (
+                    {transcript.map((item, index) => (
                       <div key={index} className={`mb-4 ${item.role === 'interviewer' ? '' : 'pl-8'}`}>
                         <div className="font-medium text-sm text-gray-500 mb-1">
                           {item.role === 'interviewer' ? 'AI Interviewer' : 'You'}
